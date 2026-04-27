@@ -1,11 +1,20 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { ChatSidebar } from "@/components/chat/ChatSidebar";
 import { ChatHeader } from "@/components/chat/ChatHeader";
+import { authOptions } from "@/lib/auth";
 
-export default function ChatLayout({
+export default async function ChatLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+        redirect("/login?callbackUrl=/chat/1");
+    }
+
     return (
         <div className="flex h-screen overflow-hidden bg-background relative">
             {/* Frozen ambient orbs */}
@@ -20,7 +29,7 @@ export default function ChatLayout({
 
             {/* Main Content Area */}
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
-                <ChatHeader />
+                <ChatHeader user={session.user} />
                 {children}
             </main>
         </div>

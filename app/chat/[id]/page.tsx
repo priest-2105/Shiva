@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChatThread } from "@/components/chat/workspace/ChatThread";
 import { CodePanel } from "@/components/chat/workspace/CodePanel";
+import { FigmaOAuthCard } from "@/components/chat/FigmaOAuthCard";
 
 export type UserMessage = {
     id: number;
@@ -67,19 +68,22 @@ export default function WorkspacePage() {
     const [activeGenId, setActiveGenId] = useState(1);
 
     return (
-        <div className="flex flex-1 overflow-hidden">
-            <ChatThread
-                messages={MOCK_MESSAGES}
-                open={threadOpen}
-                activeGenId={activeGenId}
-                onToggle={() => setThreadOpen(!threadOpen)}
-                onSelectGeneration={setActiveGenId}
-            />
-            <CodePanel
-                activeGenId={activeGenId}
-                threadOpen={threadOpen}
-                onOpenThread={() => setThreadOpen(true)}
-            />
+        <div className="flex flex-1 flex-col overflow-hidden">
+            <FigmaOAuthCard />
+            <div className="flex min-h-0 flex-1 overflow-hidden">
+                <ChatThread
+                    messages={MOCK_MESSAGES}
+                    open={threadOpen}
+                    activeGenId={activeGenId}
+                    onToggle={() => setThreadOpen(!threadOpen)}
+                    onSelectGeneration={setActiveGenId}
+                />
+                <CodePanel
+                    activeGenId={activeGenId}
+                    threadOpen={threadOpen}
+                    onOpenThread={() => setThreadOpen(true)}
+                />
+            </div>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { signOut } from "next-auth/react";
 import { Settings, LogOut, User, ChevronDown, Sun, Moon, Monitor } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { useTheme } from "@/components/ThemeProvider";
@@ -14,10 +15,25 @@ const themeIcons = {
 
 const themeOrder = ["system", "light", "dark"] as const;
 
-export function ChatHeader() {
+type ChatHeaderProps = {
+    user: {
+        id: string;
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+    };
+};
+
+export function ChatHeader({ user }: ChatHeaderProps) {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const { theme, resolvedTheme, setTheme } = useTheme();
+    const initials = (user.name || user.email || "SU")
+        .split(" ")
+        .map((part) => part[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -60,8 +76,8 @@ export function ChatHeader() {
                     className="flex items-center gap-2 hover:bg-blue-100/60 dark:hover:bg-blue-950/50 p-1.5 rounded-full transition-colors outline-none"
                 >
                     <Avatar className="h-8 w-8">
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@user" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        {user.image ? <AvatarImage src={user.image} alt={user.name || user.email || "User avatar"} /> : null}
+                        <AvatarFallback>{initials}</AvatarFallback>
                     </Avatar>
                     <ChevronDown className="w-4 h-4 text-text-secondary" />
                 </button>
@@ -74,8 +90,8 @@ export function ChatHeader() {
                         shadow-xl shadow-blue-900/10 dark:shadow-blue-950/40
                         py-1">
                         <div className="px-3 py-2 border-b border-blue-200/30 dark:border-blue-800/30 mb-1">
-                            <p className="text-sm font-medium">User Name</p>
-                            <p className="text-xs text-text-secondary truncate">user@example.com</p>
+                            <p className="text-sm font-medium">{user.name || "Shiva User"}</p>
+                            <p className="text-xs text-text-secondary truncate">{user.email || "No email available"}</p>
                         </div>
 
                         <Link href="/profile" className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-blue-100/50 dark:hover:bg-blue-950/50 cursor-pointer transition-colors">
@@ -111,7 +127,10 @@ export function ChatHeader() {
                         </div>
 
                         <div className="border-t border-blue-200/30 dark:border-blue-800/30 my-1" />
-                        <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-red-50/80 dark:hover:bg-red-950/30 cursor-pointer transition-colors">
+                        <button
+                            onClick={() => signOut({ callbackUrl: "/login" })}
+                            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-red-50/80 dark:hover:bg-red-950/30 cursor-pointer transition-colors"
+                        >
                             <LogOut className="w-4 h-4" />
                             Log out
                         </button>

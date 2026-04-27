@@ -289,7 +289,6 @@ function HighlightedLine({ line }: { line: string }) {
     }
 
     const parts: ReactNode[] = [];
-    let rest = line;
     let key = 0;
 
     const push = (node: ReactNode) => parts.push(<span key={key++}>{node}</span>);

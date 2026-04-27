@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { PanelLeftClose, PanelLeftOpen, ArrowUp, Paperclip, FileCode, Cpu } from "lucide-react";
+import { PanelLeftClose, ArrowUp, Paperclip, FileCode, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/app/chat/[id]/page";
 

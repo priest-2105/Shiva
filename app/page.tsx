@@ -100,7 +100,7 @@ export default function Home() {
                                 border border-blue-200/30 dark:border-blue-800/25">
                                 <p className="text-sm text-text-secondary">Describe your component...</p>
                                 <p className="text-sm text-foreground font-medium">
-                                    A pricing table with 3 tiers — Free, Pro, and Enterprise — using Shadcn UI cards with a highlighted "Pro" tier.
+                                    A pricing table with 3 tiers — Free, Pro, and Enterprise — using Shadcn UI cards with a highlighted &quot;Pro&quot; tier.
                                 </p>
                                 <div className="flex items-center justify-between mt-2">
                                     <div className="flex gap-2">
